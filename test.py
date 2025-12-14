@@ -57,8 +57,7 @@ def test(test_path: str, pane: libtmux.Pane) -> str:
                 for _ in range(repeat):
                     pane.send_keys(token, literal=False, enter=False)
                     time.sleep(0.025)
-                        
-    return "\n".join(pane.capture_pane())
+    return [line.rstrip() for line in pane.capture_pane()]
 
 def run():
     parser = argparse.ArgumentParser()
@@ -91,14 +90,14 @@ def run():
             attach=False,
             window_command="./vm"
         )
-        print(test(args.run_test, session.active_window.active_pane))
+        print("\n".join(test(args.run_test, session.active_window.active_pane)))
         return
     for test_path in Path("tests").glob("**/*"):
         session = server.new_session(
             session_name="vm",
             kill_session=True,
             attach=False,
-            window_command="vm"
+            window_command="./vm"
         )
         if not Path(test_path).is_file():
             continue
@@ -108,19 +107,14 @@ def run():
                 print(f"\033[31msnapshot does not exist: {snap_path}\033[0m")
                 continue
             with open(snap_path, "r") as snap_file:
-                new = test(test_path, session.active_window.active_pane)
-                old = "\n".join(line.rstrip() for line in snap_file.readlines())
-                if new[0:-1] != old[0:-1]:
+                new_lines = test(test_path, session.active_window.active_pane)
+                old_lines = [line.rstrip() for line in snap_file.readlines()]
+                if "\n".join(new_lines[0:-1]) != "\n".join(old_lines[0:-1]):
                     #fail
                     print(f"\033[31m{test_path}\033[0m")
                 else:
-                    # compare last line
-                    status_new = new[-1]
-                    status_old = old[-1]
-                    cursor_info_new = status_new.split()[-1]
-                    cursor_info_old = status_old.split()[-1]
-                    row_new, col_new = cursor_info_new.split(",")
-                    row_old, col_old = cursor_info_old.split(",")
+                    row_new, col_new = new_lines[-1].split()[-1].split(",")
+                    row_old, col_old = old_lines[-1].split()[-1].split(",")
                     if row_new == row_old and (col_new == col_old or (col_new == "0-1" and col_old == "1-1")):
                         #pass
                         print(f"\033[32m{test_path}\033[0m")
