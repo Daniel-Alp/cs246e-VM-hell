@@ -9,7 +9,11 @@ tmux new-session -d -n vm -s vm
 If you are using Visual Studio Code, you can do `ctrl+shift+P` and type `Python: Create Environment` to create a `venv`. \
 If you are on MacOS to install tmux do `brew install tmux`. \
 If you are on Windows, change your operating system. \
-Copy your executable (which has to be called `vm`) into the project directory. \
+Copy your executable, which has to be called `vm`, into the project directory, and give it executable permissions. 
+```
+chmod 777 vm
+```
+you will get strange errors if you don't do this (tmux will say it failed to create a session). \
 To test your implementation against my snapshots, do:
 ```
 python3 test.py --diff

@@ -93,12 +93,6 @@ def run():
         print("\n".join(test(args.run_test, session.active_window.active_pane)))
         return
     for test_path in Path("tests").glob("**/*"):
-        session = server.new_session(
-            session_name="vm",
-            kill_session=True,
-            attach=False,
-            window_command="./vm"
-        )
         if not Path(test_path).is_file():
             continue
         snap_path = to_snap_path(test_path)
@@ -106,6 +100,13 @@ def run():
             if not Path(snap_path).exists():
                 print(f"\033[31msnapshot does not exist: {snap_path}\033[0m")
                 continue
+            time.sleep(0.5)
+            session = server.new_session(
+                session_name="vm",
+                kill_session=True,
+                attach=False,
+                window_command="./vm"
+            )
             with open(snap_path, "r") as snap_file:
                 new_lines = test(test_path, session.active_window.active_pane)
                 old_lines = [line.rstrip() for line in snap_file.readlines()]
