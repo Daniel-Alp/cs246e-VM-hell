@@ -1,0 +1,13 @@
+i
+fooo\n
+\tbar\n
+<esc>
+i
+ \tbaz\tbling
+<esc>
+<up>
+i
+foo bar baz\n
+<esc>
+<up>
+2u

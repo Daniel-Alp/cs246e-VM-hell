@@ -1,0 +1,13 @@
+i
+foo\n
+bar\n
+<esc>
+i
+baz\n
+bling\n
+<esc>
+<up 2>
+A
+\nblong
+<esc>
+2u

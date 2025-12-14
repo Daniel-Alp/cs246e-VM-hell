@@ -1,0 +1,25 @@
+i
+fooo\n
+<esc>
+i
+baar
+<esc>
+I
+1234
+<esc>
+2A
+blingblong
+<esc>
+<up 2>
+$
+db
+i
+flingflong
+<esc>
+<right 2>
+<down 2>
+u
+i
+\nhello goodbye\n
+<esc>
+2u

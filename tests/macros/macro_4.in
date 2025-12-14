@@ -1,0 +1,12 @@
+i
+hello\n
+world\n
+this is a longer line\n
+this is a slightly shorter line\n
+just kidding, it's even longer than the previous one\n
+okay now we're done\n
+let's run a macro over this text
+<esc>
+<up 6>0
+qad$ifoobar<esc>0j@aq
+@a
